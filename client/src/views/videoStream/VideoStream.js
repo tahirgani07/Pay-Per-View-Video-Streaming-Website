@@ -4,51 +4,59 @@ import ReactPlayer from 'react-player';
 import moviesReq from '../../axios';
 import './VideoStream.css';
 import Nav from '../home/Nav';
+import userStore from '../../stores/userStore';
 
 function VideoStream() {
   const { mediaType, id } = useParams();
-    const API_KEY = "3009bec8852b6cc29e106aa02959390b";
-    const [movie, setMovie] = useState();
-    var [loading, setLoading] = useState(true);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [played, setPlayed] = useState(0);
+  const API_KEY = "3009bec8852b6cc29e106aa02959390b";
+  const [movie, setMovie] = useState();
+  var [loading, setLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [played, setPlayed] = useState(0);
+  const user = userStore(state => state.user);
 
-    useEffect(() => {
-        async function getData() {
-            setLoading(true);
-            const request = await moviesReq.get(`https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${API_KEY}`);
-            setMovie(request.data);
+  useEffect(() => {
+      async function getData() {
+          setLoading(true);
+          const request = await moviesReq.get(`https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${API_KEY}`);
+          setMovie(request.data);
 
-            setLoading(false);
-            return request;
-        }
-        getData();
-    }, []);
+          setLoading(false);
+          return request;
+      }
+      getData();
+  }, []);
 
-    useEffect(() => {
-      timer();
-    }, [isPlaying, played]);
+  useEffect(() => {
+    timer();
+  }, [isPlaying, played]);
 
-    function timer() {
-      // console.log("INSIDE TIMER: " + isPlaying);
-      if(!isPlaying) return;
-      setTimeout(() => {
-        setPlayed(played + 1);
-        // console.log(played);
-      }, 1000);
-    }
+  function timer() {
+    // console.log("INSIDE TIMER: " + isPlaying);
+    if(!isPlaying) return;
+    setTimeout(() => {
+      setPlayed(played + 1);
+      // console.log(played);
+    }, 1000);
+  }
 
-    var imgSrc = `https://image.tmdb.org/t/p/original/${(movie?.backdrop_path || movie?.poster_path)}`;
+  var imgSrc = `https://image.tmdb.org/t/p/original/${(movie?.backdrop_path || movie?.poster_path)}`;
+  
+  if(loading) return <></>;
+  return (
+    <>
+      {(user == null 
+        ? <div className="notSignedIn_overlay">
+          <h1>Please Sign In to continue!</h1>
+        </div> : <></>)}
     
-    if(loading) return <></>;
-    return (
       <div className="videoStream">
         <Nav alwaysFilled />
         <div className="videoStream_contents">
           <h1 className="videoStream_title" >{(movie?.title || movie?.name || movie?.original_name)}</h1>
           <div className="player">
             <ReactPlayer
-              playing={true}
+              playing={user!=null}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               url="http://localhost:8000/video/stream/1"
@@ -61,7 +69,8 @@ function VideoStream() {
           </div>
         </div>
       </div>
-    );
+    </>
+  );
 }
 
 export default VideoStream

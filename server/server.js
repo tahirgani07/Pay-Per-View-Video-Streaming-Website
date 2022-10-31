@@ -3,8 +3,11 @@ const app = express();
 const fs = require("fs");
 const videos = require("./video-info.json");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const video = require("./models/video");
 const genre = require("./models/genre");
+const userRoutes = require("./routes/users");
 require('dotenv/config');
 
 app.get("/", function (req, res) {
@@ -12,10 +15,14 @@ app.get("/", function (req, res) {
 });
 
 
-// mongoose.connect(process.env.MONGO_URL, () => {
-//   console.log("MongoDB connected");
-// });
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+  console.log("MongoDB connected");
+});
 
+app.use(bodyParser.urlencoded({ extended:false }));
+app.use(bodyParser.json());
+app.use(cors());
+app.use("/user", userRoutes);
 
 app.get("/videos", async function(req, res) {
   var reqGenre = req.query.genre;

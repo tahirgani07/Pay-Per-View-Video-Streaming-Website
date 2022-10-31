@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useOverlayStore from '../../stores/overlayStore';
 import useUserStore from '../../stores/userStore';
+import { FaUser } from 'react-icons/fa';
 import './Nav.css';
 
 function Nav({ alwaysFilled, isHomePage }) {
@@ -9,6 +11,12 @@ function Nav({ alwaysFilled, isHomePage }) {
     const navigate = useNavigate();
     const user = useUserStore(state => state.user);
     const setUser = useUserStore(state => state.setUser);
+    const toggleShowAuthOverlay = useOverlayStore(state => state.toggleShowAuthOverlay);
+
+    function signOut() {
+        localStorage.clear();
+        setUser(null);
+    }
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
@@ -28,12 +36,22 @@ function Nav({ alwaysFilled, isHomePage }) {
         }}>PPU-Stream</h2>
         {(
             (user == null)  
-            ? <button className="button_signIn" onClick={() => {
-                setUser({});
+            ? <button className="nav_button_signIn" onClick={() => {
+                toggleShowAuthOverlay();
             }}>Sign In</button>
-            : <button className="button_signIn" onClick={() => {
-                setUser(null);
-            }}>Sign Out</button>
+            : (
+                <div className="dropdown">
+                    <button className="dropbtn">
+                        <div className="nav_user_details">
+                            <FaUser />
+                            <div className="nav_userName">{user.name}</div>
+                        </div>
+                    </button>
+                    <div className="dropdown-content">
+                        <a onClick={signOut}>Sign Out</a>
+                    </div>
+                </div>
+            )
         )}
     </div>
   )

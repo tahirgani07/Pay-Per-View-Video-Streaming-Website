@@ -1,7 +1,7 @@
 import create from 'zustand';
 
 let userStore = create((set) => ({
-    user: null,
+    user: JSON.parse(localStorage.getItem('user-profile'))?.result,
     setUser: (user) => set((state) => ({ user: user })),
 }));
 
