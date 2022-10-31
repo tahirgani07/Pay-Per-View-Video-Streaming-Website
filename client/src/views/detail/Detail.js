@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import moviesReq from '../../axios';
 import Nav from '../home/Nav';
 import './Detail.css';
@@ -9,6 +9,7 @@ function Detail() {
     const API_KEY = "3009bec8852b6cc29e106aa02959390b";
     const [movie, setMovie] = useState();
     var [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getData() {
@@ -44,7 +45,9 @@ function Detail() {
                 </h2>
 
                 <div className="detail_button_container">
-                    <button className="detail_button play_button">Play</button>
+                    <button className="detail_button play_button" onClick={() => {
+                        navigate(`/stream/${mediaType}/${id}`);
+                    }}>Play</button>
                     <button className="detail_button">Watch Trailer</button>
                     <button className="detail_button">Add to Watchlist</button>
                 </div>

@@ -1,0 +1,19 @@
+.videoStream {
+    background: #0F171E;
+    color: #fff;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    overflow: hidden;
+}
+
+.videoStream_contents {
+    color: #FFF;
+    background: rgba(0, 0, 0, .4);
+    padding: 120px 80px;
+}
+
+.videoStream_title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}

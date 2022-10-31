@@ -34,13 +34,14 @@ function Banner() {
             backgroundSize: "cover",
             backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
             backgroundPosition: "center center",
-        }}
-        >
+        }} >
             <div className="banner_contents">
                 <h1 className="banner_title">{movie?.title || movie?.name || movie?.original_name}</h1>
 
                 <div className="banner_button_container">
-                    <button className="banner_button">Play</button>
+                    <button className="banner_button" onClick={() => {
+                        navigate(`/stream/${(movie?.media_type || "movie")}/${movie?.id}`);
+                    }} >Play</button>
                     <button className="banner_button" onClick={() => {
                         navigate(`/detail/${(movie?.media_type || "movie")}/${movie?.id}`);
                     }} >Details</button>

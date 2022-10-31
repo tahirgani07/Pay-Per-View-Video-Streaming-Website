@@ -8,7 +8,7 @@ import requests from '../../request';
 export default function Home() {
   return (
     <div className="home">
-        <Nav />
+        <Nav isHomePage />
         <Banner />
 
         <Row title="Trending" fetchUrl={requests.fetchTrending} isLargeRow />
