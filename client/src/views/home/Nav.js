@@ -1,11 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useUserStore from '../../stores/userStore';
 import './Nav.css';
 
 function Nav({ alwaysFilled, isHomePage }) {
     const [show, handleShow] = useState(alwaysFilled);
     const navigate = useNavigate();
+    const user = useUserStore(state => state.user);
+    const setUser = useUserStore(state => state.setUser);
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
@@ -23,7 +26,15 @@ function Nav({ alwaysFilled, isHomePage }) {
             if(!isHomePage)
                 navigate('/');
         }}>PPU-Stream</h2>
-        <button className="button_signIn">Sign In</button>
+        {(
+            (user == null)  
+            ? <button className="button_signIn" onClick={() => {
+                setUser({});
+            }}>Sign In</button>
+            : <button className="button_signIn" onClick={() => {
+                setUser(null);
+            }}>Sign Out</button>
+        )}
     </div>
   )
 }

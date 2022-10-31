@@ -12,9 +12,9 @@ app.get("/", function (req, res) {
 });
 
 
-mongoose.connect(process.env.MONGO_URL, () => {
-  console.log("MongoDB connected");
-});
+// mongoose.connect(process.env.MONGO_URL, () => {
+//   console.log("MongoDB connected");
+// });
 
 
 app.get("/videos", async function(req, res) {

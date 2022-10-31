@@ -10,6 +10,8 @@ function VideoStream() {
     const API_KEY = "3009bec8852b6cc29e106aa02959390b";
     const [movie, setMovie] = useState();
     var [loading, setLoading] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [played, setPlayed] = useState(0);
 
     useEffect(() => {
         async function getData() {
@@ -23,6 +25,19 @@ function VideoStream() {
         getData();
     }, []);
 
+    useEffect(() => {
+      timer();
+    }, [isPlaying, played]);
+
+    function timer() {
+      // console.log("INSIDE TIMER: " + isPlaying);
+      if(!isPlaying) return;
+      setTimeout(() => {
+        setPlayed(played + 1);
+        // console.log(played);
+      }, 1000);
+    }
+
     var imgSrc = `https://image.tmdb.org/t/p/original/${(movie?.backdrop_path || movie?.poster_path)}`;
     
     if(loading) return <></>;
@@ -32,8 +47,10 @@ function VideoStream() {
         <div className="videoStream_contents">
           <h1 className="videoStream_title" >{(movie?.title || movie?.name || movie?.original_name)}</h1>
           <div className="player">
-            <ReactPlayer 
+            <ReactPlayer
               playing={true}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
               url="http://localhost:8000/video/stream/1"
               pip={false}
               // stopOnUnmount={false}
