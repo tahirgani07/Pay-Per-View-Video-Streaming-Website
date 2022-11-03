@@ -19,7 +19,7 @@ function Auth() {
     try {
       let res;
       setLoading(true);
-
+      console.log(formData)
       if(isSignup) {
         res = await backendReq.post("/user/signup", formData);
       } else {

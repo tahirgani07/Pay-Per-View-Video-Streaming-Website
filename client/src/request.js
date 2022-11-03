@@ -1,13 +1,16 @@
-const API_KEY = "3009bec8852b6cc29e106aa02959390b";
+const TMDB_API_KEY = "3009bec8852b6cc29e106aa02959390b";
 
 const requests = {
-    fetchTrending: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
-    fetchTopRated: `/movie/top_rated?api_key=${API_KEY}&language=en-US`,
-    fetchActionMovies: `/discover/movie?api_key=${API_KEY}&with_genres=28`,
-    fetchComedyMovies: `/discover/movie?api_key=${API_KEY}&with_genres=35`,
-    fetchHorrorMovies: `/discover/movie?api_key=${API_KEY}&with_genres=27`,
-    fetchRomanceMovies: `/discover/movie?api_key=${API_KEY}&with_genres=10749`,
-    fetchDocumentaries: `/discover/movie?api_key=${API_KEY}&with_genres=99`,
+    fetchActionMovies: `/movies/action?count=20`,
+    fetchComedyMovies: `/movies/comedy?count=20`,
+    fetchHorrorMovies: `/movies/horror?count=20`,
+    fetchRomanceMovies: `/movies/romance?count=20`,
+    fetchDocumentaries: `/movies/documentary?count=20`,
+    fetchAnimationMovies: `/movies/animation?count=20`,
+    fetchFamilyMovies: `/movies/family?count=20`,
+    fetchFantasyMovies: `/movies/fantasy?count=20`,
+    fetchScienceFictionMovies: `/movies/science%20fiction?count=20`,
+    fetchHistoryMovies: `/movies/history?count=20`,
 };
 
 export default requests;

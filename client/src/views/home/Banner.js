@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Banner.css'
-import moviesReq from '../../axios';
+import { tmdbReq, backendReq } from '../../axios';
 import requests from '../../request';
 
 function Banner() {
     const [movie, setMovie] = useState({});
     var [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const TMDB_API_KEY = "3009bec8852b6cc29e106aa02959390b";
     
     useEffect(() => {
         async function fetchData() {
             setLoading(true);
-            const request = await moviesReq.get(requests.fetchTrending);
-            var idx = Math.floor(Math.random() * request.data.results.length - 1)
+            const req1 = await backendReq.get(requests.fetchActionMovies);
+            const movieIds = req1.data.result;
+            var idx = Math.floor(Math.random() * movieIds.length - 1)
             if(idx < 0) idx = 0;
-            setMovie(request.data.results[idx])
+            
+            const req2 = await tmdbReq.get(`https://api.themoviedb.org/3/movie/${movieIds[idx]}?api_key=${TMDB_API_KEY}`);
+            setMovie(req2.data);
 
             setLoading(false);
-            return request;
         }
         fetchData();
     }, []);
@@ -27,7 +30,7 @@ function Banner() {
         return str?.length > n ? str.substr(0, n - 1) + "..." : str;
     }
 
-    if(loading) return <></>;
+    if(loading) return <div className="banner"></div>;
     return (
         <header className="banner"
         style={{

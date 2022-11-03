@@ -11,9 +11,9 @@ export default function Home() {
         <Nav isHomePage />
         <Banner />
 
-        <Row title="Trending" fetchUrl={requests.fetchTrending} isLargeRow />
-        <Row title="Top Rated" fetchUrl={requests.fetchTopRated} />
-        <Row title="Action Movies" fetchUrl={requests.fetchActionMovies} />
+        {/* <Row title="Trending" fetchUrl={requests.fetchTrending} isLargeRow />
+        <Row title="Top Rated" fetchUrl={requests.fetchTopRated} /> */}
+        <Row title="Action Movies" fetchUrl={requests.fetchActionMovies} isLargeRow />
         <Row title="Comedy Movies" fetchUrl={requests.fetchComedyMovies} />
         <Row title="Horror Movies" fetchUrl={requests.fetchHorrorMovies} />
         <Row title="Romance Movies" fetchUrl={requests.fetchRomanceMovies} />

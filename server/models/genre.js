@@ -5,11 +5,11 @@ const genreSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    videos: {
+    movies: {
         type: [{
-            type: mongoose.Schema.ObjectId,
+            type: String,
             required: true,
-            ref: "video",
+            ref: "movie",
         }],
     },
     createdAt: {

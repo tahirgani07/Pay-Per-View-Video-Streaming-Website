@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import moviesReq from '../../axios';
+import { tmdbReq } from '../../axios';
 import Nav from '../home/Nav';
 import './Detail.css';
 
 function Detail() {
     const { mediaType, id } = useParams();
-    const API_KEY = "3009bec8852b6cc29e106aa02959390b";
+    const TMDB_API_KEY = "3009bec8852b6cc29e106aa02959390b";
     const [movie, setMovie] = useState();
     var [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function Detail() {
     useEffect(() => {
         async function getData() {
             setLoading(true);
-            const request = await moviesReq.get(`https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${API_KEY}`);
+            const request = await tmdbReq.get(`https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${TMDB_API_KEY}`);
             setMovie(request.data);
 
             setLoading(false);
