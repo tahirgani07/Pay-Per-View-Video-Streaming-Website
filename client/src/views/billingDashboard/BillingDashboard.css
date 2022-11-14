@@ -1,0 +1,81 @@
+.billing_dashboard {
+    width: 100%;
+    height: 100vh;
+    background: #F2F3F3;
+
+}
+
+.bill_container {
+    padding-top: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.bill_header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.bill_title {
+    font-weight: 500;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.bill_content_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bill_content_header h4 {
+    color: grey;
+    font-weight: 500;
+}
+
+.bill_content_header h3 {
+    font-weight: 600;
+}
+
+.datepicker_input {
+    cursor: pointer;
+    height: 30px;
+    width: 120px;
+    padding: 0 10px;
+    text-align: center;
+    background: #EC7211;
+    margin-left: 2rem;
+    color: #fff;
+    outline: none;
+    border-radius: 2px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.bill_content_container {
+    margin-top: 2rem;
+    background: #fff;
+    padding: 1rem;
+}
+
+.bill_content_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid rgb(228, 225, 225);
+}
+
+.bill_content_row h4 {
+    font-weight: 500;
+}
+
+.first_row {
+    color: #545B64;
+}
+

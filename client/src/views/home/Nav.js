@@ -5,8 +5,9 @@ import useOverlayStore from '../../stores/overlayStore';
 import useUserStore from '../../stores/userStore';
 import { FaUser } from 'react-icons/fa';
 import './Nav.css';
+import Sidebar from '../sidebar/Sidebar';
 
-function Nav({ alwaysFilled, isHomePage }) {
+function Nav({ alwaysFilled, sideItemTitle, isHomePage }) {
     const [show, handleShow] = useState(alwaysFilled);
     const navigate = useNavigate();
     const user = useUserStore(state => state.user);
@@ -30,10 +31,14 @@ function Nav({ alwaysFilled, isHomePage }) {
     <div className={`nav ${show && "nav_filled"}`}>
         {/* <img className="nav_logo" src="" alt="" />
         <img className="nav_avatar" src="" alt="" /> */}
-        <h2 className="nav_logo" onClick={() => {
-            if(!isHomePage)
-                navigate('/');
-        }}>PPU-Stream</h2>
+        <div className="sidebar_container">
+            <Sidebar sideItemTitle={sideItemTitle} />
+            <h2 className="nav_logo" onClick={() => {
+                if(!isHomePage)
+                    navigate('/');
+            }}>StreamMix</h2>
+        </div>
+        
         {(
             (user == null)  
             ? <button className="nav_button_signIn" onClick={() => {
@@ -48,6 +53,16 @@ function Nav({ alwaysFilled, isHomePage }) {
                         </div>
                     </button>
                     <div className="dropdown-content">
+                        <a onClick={
+                                () => {
+                                    navigate("/movies/all/watchlisted");
+                                }
+                        }>Watchlist</a>
+                        <a onClick={
+                                () => {
+                                    navigate("/billing_dashboard");
+                                }
+                        }>Bills</a>
                         <a onClick={signOut}>Sign Out</a>
                     </div>
                 </div>

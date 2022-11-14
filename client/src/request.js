@@ -1,16 +1,19 @@
 const TMDB_API_KEY = "3009bec8852b6cc29e106aa02959390b";
 
 const requests = {
-    fetchActionMovies: `/movies/action?count=20`,
-    fetchComedyMovies: `/movies/comedy?count=20`,
-    fetchHorrorMovies: `/movies/horror?count=20`,
-    fetchRomanceMovies: `/movies/romance?count=20`,
-    fetchDocumentaries: `/movies/documentary?count=20`,
-    fetchAnimationMovies: `/movies/animation?count=20`,
-    fetchFamilyMovies: `/movies/family?count=20`,
-    fetchFantasyMovies: `/movies/fantasy?count=20`,
-    fetchScienceFictionMovies: `/movies/science%20fiction?count=20`,
-    fetchHistoryMovies: `/movies/history?count=20`,
+    fetchActionMovies: `/movies/genres/action?count=1000`,
+    fetchComedyMovies: `/movies/genres/comedy?count=1000`,
+    fetchHorrorMovies: `/movies/genres/horror?count=1000`,
+    fetchRomanceMovies: `/movies/genres/romance?count=1000`,
+    fetchDocumentaries: `/movies/genres/documentary?count=1000`,
+    fetchAnimationMovies: `/movies/genres/animation?count=1000`,
+    fetchFamilyMovies: `/movies/genres/family?count=1000`,
+    fetchFantasyMovies: `/movies/genres/fantasy?count=1000`,
+    fetchScienceFictionMovies: `/movies/genres/science%1000fiction?count=1000`,
+    fetchHistoryMovies: `/movies/genres/history?count=1000`,
+    fetchTrendingMovies: `/movies/trending`,
+    fetchWatchlistedMovies: `/watchlist`,
+    addToWatchlist: `/watchlist/add`,
 };
 
 export default requests;

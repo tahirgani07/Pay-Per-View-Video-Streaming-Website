@@ -1,0 +1,42 @@
+.allmovies {
+    overflow-x: hidden;
+    background: #111;
+    color: #fff;
+    min-height: 100vh;
+}
+
+.title {
+    margin-left: 30px;
+    margin-top: 100px;
+}
+
+.grid {
+    margin-top: 1rem;
+    margin-left: 30px;
+    margin-right: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 165px);
+    grid-gap: 12px;
+}
+
+.row_poster {
+    object-fit: contain;
+    max-height: 100px;
+    /* margin-right: 10px; */
+    /* margin-left: 20px; */
+    transition: transform 450ms;
+    /* background: rgb(207, 207, 207); */
+}
+
+.row_poster:hover {
+    transform: scale(1.08);
+    cursor: pointer;
+}
+
+.row_poster_large {
+    max-height: 250px;
+}
+
+.row_poster_large:hover {
+    transform: scale(1.09);
+}

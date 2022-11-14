@@ -16,10 +16,9 @@ export default function Row({ title, fetchUrl, isLargeRow }) {
             setLoading(true);
             const request = await backendReq.get(fetchUrl);
             var movieIds = request.data.result;
-            console.log(movieIds)
+            movieIds = movieIds.slice(0, 20);
             movieIds.forEach(async id => {
                 const tmp = await tmdbReq.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}`);
-                console.log(tmp.data)
                 setMovies(state => [ ...state, tmp.data ]);
             });
             

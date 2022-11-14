@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
-import moviesReq from '../../axios';
+import moviesReq, { backendReq } from '../../axios';
 import './VideoStream.css';
 import Nav from '../home/Nav';
 import userStore from '../../stores/userStore';
@@ -14,20 +14,64 @@ function VideoStream() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [played, setPlayed] = useState(0);
   const user = userStore(state => state.user);
+  const playedRef = useRef(played);
+  const movieRef = useRef(movie);
+
+  useEffect(() => { playedRef.current = played })
 
   useEffect(() => {
       async function getData() {
           setLoading(true);
           const request = await moviesReq.get(`https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${API_KEY}`);
-          setMovie(request.data);
+          setMovie((curMovie) => {
+            movieRef.current = request.data;
+            return request.data;
+          });
 
           setLoading(false);
           return request;
       }
       getData();
-  }, []);
+
+      const unloadCallback = async (event) => {
+        event.preventDefault();
+        event.returnValue = "";
+        console.log("PLAYED - " + playedRef.current);
+        var title = movieRef.current.title;
+        if(!title) title = movieRef.current.name;
+        if(!title) title = movieRef.current.original_name;
+        console.log(movieRef.current)
+        await backendReq.post("/bill/add", {
+          email: user.email,
+          title: title,
+          watchtime: String(playedRef.current),
+          year: String(new Date().getFullYear()),
+          month: String(new Date().getMonth()),
+        });
+        setPlayed(0);
+        return "";
+      };
+      window.addEventListener("beforeunload", unloadCallback);
+
+      return async () => {
+        window.removeEventListener("beforeunload", unloadCallback);
+        console.log(playedRef.current);
+        var title = movieRef.current.title;
+        if(!title) title = movieRef.current.name;
+        if(!title) title = movieRef.current.original_name;
+        console.log(movieRef.current)
+        await backendReq.post("/bill/add", {
+          email: user.email,
+          title: title,
+          watchtime: String(playedRef.current),
+          year: String(new Date().getFullYear()),
+          month: String(new Date().getMonth()),
+        });
+      };
+  }, [id]);
 
   useEffect(() => {
+    playedRef.current = played;
     timer();
   }, [isPlaying, played]);
 

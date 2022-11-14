@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bill = require("./bill");
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -12,6 +13,14 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    bills: {
+        type: [bill],
+        default: [],
+    },
+    watchlist: {
+        type: [String],
+        default: [],
     },
     createdAt: {
         type: Date,
