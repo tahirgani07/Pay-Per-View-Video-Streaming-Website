@@ -25,3 +25,7 @@
 /client/yarn-error.log*
 
 /server/.env
+
+/server/movies_distance_matrix.json
+/server/moviesIds.json
+/server/trending_movies.json
