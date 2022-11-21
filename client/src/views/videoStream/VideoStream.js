@@ -33,10 +33,9 @@ function VideoStream() {
       }
       getData();
 
-      const unloadCallback = async (event) => {
-        event.preventDefault();
-        event.returnValue = "";
+      async function addWatchtime() {
         console.log("PLAYED - " + playedRef.current);
+        if((playedRef.current - 1) <= 0) return;
         var title = movieRef.current.title;
         if(!title) title = movieRef.current.name;
         if(!title) title = movieRef.current.original_name;
@@ -49,24 +48,19 @@ function VideoStream() {
           month: String(new Date().getMonth()),
         });
         setPlayed(0);
+      }
+
+      const unloadCallback = async (event) => {
+        event.preventDefault();
+        event.returnValue = "";
+        addWatchtime();
         return "";
       };
       window.addEventListener("beforeunload", unloadCallback);
 
       return async () => {
         window.removeEventListener("beforeunload", unloadCallback);
-        console.log(playedRef.current);
-        var title = movieRef.current.title;
-        if(!title) title = movieRef.current.name;
-        if(!title) title = movieRef.current.original_name;
-        console.log(movieRef.current)
-        await backendReq.post("/bill/add", {
-          email: user.email,
-          title: title,
-          watchtime: String(playedRef.current),
-          year: String(new Date().getFullYear()),
-          month: String(new Date().getMonth()),
-        });
+        addWatchtime();
       };
   }, [id]);
 
@@ -80,7 +74,7 @@ function VideoStream() {
     if(!isPlaying) return;
     setTimeout(() => {
       setPlayed(played + 1);
-      // console.log(played);
+      console.log(played);
     }, 1000);
   }
 
@@ -104,6 +98,8 @@ function VideoStream() {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               url="http://localhost:8000/video/stream/1"
+              onBuffer={() => setIsPlaying(false)}
+              onBufferEnd={() => setIsPlaying(true)}
               pip={false}
               // stopOnUnmount={false}
               height='500px' 

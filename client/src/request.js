@@ -14,6 +14,7 @@ const requests = {
     fetchTrendingMovies: `/movies/trending`,
     fetchWatchlistedMovies: `/watchlist`,
     addToWatchlist: `/watchlist/add`,
+    searchAllMovies: `/movies/search/all`,
 };
 
 export default requests;

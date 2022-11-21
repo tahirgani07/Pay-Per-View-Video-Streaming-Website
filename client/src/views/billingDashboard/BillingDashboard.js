@@ -10,41 +10,50 @@ import backendReq from '../../axios';
 const BillingDashboard = () => {
     var [loading, setLoading] = useState(true);
     var [movieWatchtimes, setMovieWatchtimes] = useState([]);
+    var [totalAmount, setTotalAmount] = useState(0);
+    var [totalPaid, setTotalPaid] = useState(0);
+    var [remAmount, setRemAmount] = useState(0);
     var [totalSeconds, setTotalSeconds] = useState(0);
     const user = userStore(state => state.user);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const navigate = useNavigate();
-    const chargePerMinute = 1;
 
-    useEffect(() => {
-        async function getData() {
-            setLoading(true);
-        
-            const month = selectedDate.getMonth();
-            const year = selectedDate.getFullYear();
-            try {
-                const request = await backendReq.get(`/bill/${year}/${month}`, {
-                    params: {
-                        email: user?.email,
-                    }
-                });
-                
-                setMovieWatchtimes(state => request.data.result);
-                var value = 0;
-                request.data.result.forEach(e => {
-                    value += e.watchtime;
-                });
-                setTotalSeconds(state => value);
-                setLoading(false);
-            } catch(e) {
-                alert(e?.response.data.message);
-            } finally {
-                if(!user) {
-                    setMovieWatchtimes(state => []);
-                    setTotalSeconds(state => 0);
+    async function getData() {
+        setLoading(true);
+    
+        const month = selectedDate.getMonth();
+        const year = selectedDate.getFullYear();
+        try {
+            const request = await backendReq.get(`/bill/${year}/${month}`, {
+                params: {
+                    email: user?.email,
                 }
+            });
+            console.log(request.data.result)
+            setMovieWatchtimes(state => (request.data.result.movieWatchtimes || []));
+            setTotalAmount(state => (request.data.result.totalAmount || 0));
+            setTotalPaid(state => (request.data.result.totalPaid || 0));
+            setRemAmount(state => ((request.data.result.totalAmount || 0) - (request.data.result.totalPaid || 0)).toFixed(4));
+            var value = 0;
+            request.data.result?.movieWatchtimes?.forEach(e => {
+                value += e.watchtime;
+            });
+            setTotalSeconds(state => value);
+            setLoading(false);
+        } catch(e) {
+            alert((e?.response?.data?.message || e));
+        } finally {
+            if(!user) {
+                setMovieWatchtimes(state => []);
+                setTotalSeconds(state => 0);
+                setTotalAmount(state => 0);
+                setTotalPaid(state => 0);
+                setRemAmount(state => 0);
             }
         }
+    }
+
+    useEffect(() => {
         getData();
     }, [selectedDate, user]);
 
@@ -65,6 +74,27 @@ const BillingDashboard = () => {
                     ref={datepickerRef => onDatepickerRef(datepickerRef)}
                     selected={selectedDate} onChange={(date) => setSelectedDate(date)} />
                     </div>
+                    { (remAmount > 0) 
+                        && 
+                        <button 
+                        className="payment_btn"
+                        onClick={async () => {
+                            try {
+                                await backendReq.post("/bill/payment", {
+                                    email: user.email,
+                                    year: selectedDate.getFullYear(),
+                                    month: selectedDate.getMonth(),
+                                });
+                                alert("Payment Successfull!");
+                                getData();
+                            } catch(e) {
+                                alert((e?.response?.data?.message || e));
+                            }
+
+                        }}
+                        >Pay Remaining : ₹ {remAmount}
+                        </button>
+                    }
                 </div>
 
                 <div className="bill_content_container">
@@ -80,7 +110,12 @@ const BillingDashboard = () => {
 
                         <div>
                             <h4>Total service charges in Rs</h4>
-                            <h3>Rs. {((totalSeconds*chargePerMinute)/60).toFixed(4)}</h3>
+                            <h3>Rs. {totalAmount}</h3>
+                        </div>
+
+                        <div>
+                            <h4>Total Paid in Rs</h4>
+                            <h3>Rs. {totalPaid}</h3>
                         </div>
                     </div>
 

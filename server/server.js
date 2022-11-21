@@ -9,6 +9,7 @@ const videoRoutes = require("./routes/videoRoutes");
 const movieRoutes = require("./routes/moviesRoutes");
 const billRoutes = require("./routes/billRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
+const paymentReminder = require("./paymentReminder.js");
 
 require('dotenv/config');
 
@@ -29,6 +30,9 @@ app.use("/video", videoRoutes);
 app.use("/movies", movieRoutes);
 app.use("/bill", billRoutes);
 app.use("/watchlist", watchlistRoutes);
+
+// Payment Reminders
+paymentReminder.start();
 
 app.listen(process.env.PORT, function () {
   console.log("Listening on port 8000!");

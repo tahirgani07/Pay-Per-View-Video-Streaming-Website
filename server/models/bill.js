@@ -16,6 +16,14 @@ const monthSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    totalAmount: {
+        type: Number,
+        default: 0,
+    },
+    totalPaid: {
+        type: Number,
+        default: 0,
+    },
     movieWatchtimes: {
         type: [movieWatchtimeSchema],
         default: [],

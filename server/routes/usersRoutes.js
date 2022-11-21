@@ -12,6 +12,8 @@ router.post("/signin", async (req, res) => {
 
         if(!existingUser) return res.status(404).json({ message: "User doesn't exist." });
 
+        if(existingUser.blocked) return res.status(404).json({ message: "This user is blocked." });
+
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
 
         if(!isPasswordCorrect) return res.status(400).json({ message: "Invalid Credentials" });

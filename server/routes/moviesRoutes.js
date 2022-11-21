@@ -6,6 +6,7 @@ const Genre = require("../models/genre.js");
 const movieDistancesMatrix = require("../movies_distance_matrix.json");
 const movieIds = require("../movieIds.json");
 const trendingMovies = require("../trending_movies.json");
+const Movie = require("../models/movie.js");
 
 router.get("/genres/:genre", async (req, res) => {
     const genre = req.params.genre.toLowerCase();
@@ -41,6 +42,14 @@ router.get("/recommended/:id", (req, res) => {
 
 router.get("/trending", (req, res) => {
     res.status(200).json({ result: trendingMovies });
+});
+
+router.get("/search/all", async (req, res) => {
+    const { searchTxt } = req.query;
+    
+    const movies = (await Movie.find()).filter((movie) => movie.title.toLocaleLowerCase().includes(searchTxt.toLocaleLowerCase()));
+
+    res.status(200).json({ result: movies });
 });
 
 module.exports = router;
