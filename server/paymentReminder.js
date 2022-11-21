@@ -21,6 +21,8 @@ function dateDiffInDays(a, b) {
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
+// User needs to pay all the due of previous month from 1st-15th of the next month. 
+// On the 16th day, users account will be blocked.
 function start() {
     // Runs at 10am every day
     cron.schedule("0 0 10 * * *", async function() {
@@ -30,7 +32,9 @@ function start() {
             if(user.blocked) return;
 
             const today = new Date();
-            const checkingMonth = today.getMonth() + (today.getDate() !== 1);
+            if(today.getDate() > 16) return;
+
+            const checkingMonth = today.getMonth() - 1;
             
             var billIndex = user.bills.findIndex((cur) => cur.year == today.getFullYear().toString());
             if(billIndex === -1) return;
@@ -41,9 +45,9 @@ function start() {
 
             if(remAmount === 0) return;
             
-            const firstDayOfNextMonth = new Date(today.getFullYear(), checkingMonth, 1);
+            const curMonth16th = new Date(today.getFullYear(), today.getMonth(), 16);
 
-            const remDays = dateDiffInDays(today, firstDayOfNextMonth);
+            const remDays = dateDiffInDays(today, curMonth16th);
 
             if((remDays !== 7) && (remDays !== 1) && (remDays !== 0)) return;
 
